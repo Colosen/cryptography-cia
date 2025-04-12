@@ -77,3 +77,51 @@ std::string affine_decrypt(const std::string &c, int A, int B) {
 
   return m;
 }
+
+std::string vignere_encrypt(const std::string m, const std::string k) {
+  std::string c;
+  int k_index = 0;
+  for (const char i : m) {
+    int j = (static_cast<int>(i) + static_cast<int>(k[k_index]) - 2 * static_cast<int>('a')) % 26 + static_cast<int>('a');
+    k_index = (k_index + 1) % static_cast<int>(k.size());
+    c += static_cast<char>(j);
+  }
+
+  return c;
+}
+
+std::string vignere_decrypt(const std::string c, const std::string k) {
+  std::string m;
+  int k_index = 0;
+  for (const char i : c) {
+    int j = (static_cast<int>(i) + 26 - static_cast<int>(k[k_index])) % 26 + static_cast<int>('a');
+    k_index = (k_index + 1) % static_cast<int>(k.size());
+    m += static_cast<char>(j);
+  }
+
+  return m;
+}
+
+std::string beaufort_encrypt(const std::string m, int k) {
+  std::string c;
+  for (const char i : m) {
+    int encoded_value = static_cast<int>(i) - static_cast<int>('a');
+    int encrypted_value = (51 - k - i) % 26;
+    int decoded_value = encrypted_value + static_cast<int>('a');
+    c += (char) decoded_value;
+  }
+
+  return c;
+}
+
+std::string beaufort_decrypt(const std::string c, int k) {
+  std::string m;
+  for (const char i : c) {
+    int encoded_value = static_cast<int>(i) - static_cast<int>('a');
+    int decrypted_value = (51 - k - i) % 26;
+    int decoded_value = decrypted_value + static_cast<int>('a');
+    m += (char) decoded_value;
+  }
+
+  return m;
+}

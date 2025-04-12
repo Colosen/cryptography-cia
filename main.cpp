@@ -20,5 +20,12 @@ int main()
   std::cout << c << std::endl;
   std::cout << august_decrypt(c) << std::endl;
 
+  const std::string k = "mykey";
+  c = vignere_encrypt("hellohello", k);
+  std::cout << c << std::endl;
+  std::cout << vignere_decrypt(c, k) << std::endl;
 
+  c = beaufort_encrypt("helloworld", 1);
+  std::cout << c << std::endl;
+  std::cout <<  beaufort_decrypt(c, 1) << std::endl;
 }

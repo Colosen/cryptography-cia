@@ -23,4 +23,12 @@ std::string affine_encrypt(const std::string &m, int A, int B);
 
 std::string affine_decrypt(const std::string &c, int A, int B);
 
+std::string vignere_encrypt(const std::string m, const std::string k);
+
+std::string vignere_decrypt(const std::string c, const std::string k);
+
+std::string beaufort_encrypt(const std::string m, int k);
+
+std::string beaufort_decrypt(const std::string c, int k);
+
 #endif //CRYPTO_H

@@ -11,7 +11,7 @@ std::string caesar_encrypt(const std::string& m, int k) {
     int encoded_value = static_cast<int>(i) - static_cast<int>('a');
     int encrypted_value = (encoded_value + k) % 26;
     int decoded_value = encrypted_value + static_cast<int>('a');
-    c += (char) decoded_value;
+    c += static_cast<char>(decoded_value);
   }
 
   return c;
@@ -23,7 +23,7 @@ std::string caesar_decrypt(const std::string& c, int k) {
     int encoded_value = static_cast<int>(i) - static_cast<int>('a');
     int decrypted_value = (encoded_value - k) % 26;
     int decoded_value = decrypted_value + static_cast<int>('a');
-    m += (char) decoded_value;
+    m += static_cast<char>(decoded_value);
   }
 
   return m;
@@ -106,9 +106,9 @@ std::string beaufort_encrypt(const std::string m, int k) {
   std::string c;
   for (const char i : m) {
     int encoded_value = static_cast<int>(i) - static_cast<int>('a');
-    int encrypted_value = (51 - k - i) % 26;
+    int encrypted_value = (51 - k + static_cast<int>('a') - i) % 26;
     int decoded_value = encrypted_value + static_cast<int>('a');
-    c += (char) decoded_value;
+    c += static_cast<char>(decoded_value);
   }
 
   return c;
@@ -118,9 +118,9 @@ std::string beaufort_decrypt(const std::string c, int k) {
   std::string m;
   for (const char i : c) {
     int encoded_value = static_cast<int>(i) - static_cast<int>('a');
-    int decrypted_value = (51 - k - i) % 26;
+    int decrypted_value = (51 - k + static_cast<int>('a') - i) % 26;
     int decoded_value = decrypted_value + static_cast<int>('a');
-    m += (char) decoded_value;
+    m += static_cast<char>(decoded_value);
   }
 
   return m;

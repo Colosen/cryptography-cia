@@ -125,3 +125,24 @@ std::string beaufort_decrypt(const std::string c, int k) {
 
   return m;
 }
+
+std::string autokey_gen_master_key(const std::string key, const std::string m) {
+  if (key.size() >= m.size()) {
+    return key;
+  }
+
+  std::string master_key = key;
+  int m_index = 0;
+  while (master_key.size() < m.size()) {
+    master_key += m[m_index];
+    m_index = (m_index + 1) % static_cast<int>(m.size());
+  }
+}
+
+std::string autokey_encrypt(const std::string m, int k) {
+
+}
+
+std::string autokey_decrypt(const std::string c, int k) {
+
+}

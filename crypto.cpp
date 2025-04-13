@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <string>
+#include <utility>
 
 std::string caesar_encrypt(const std::string& m, int k) {
   std::string c;
@@ -54,6 +55,32 @@ std::string august_decrypt(const std::string &c) {
   return caesar_decrypt(c, 1);
 }
 
+int gcd(int a, int b, int& x, int& y) {
+  if (b == 0) {
+    x = 1;
+    y = 0;
+    return a;
+  }
+
+  int x1, y1;
+  int d = gcd(b, a % b, x1, y1);
+  x = y1;
+  y = x1 - y1 * (a / b);
+  return d;
+}
+
+int mod_mul_inv(int a, int m) {
+  int x, y;
+  int g = gcd(a, m, x, y);
+  if (g != 1) {
+    std::cout << "No solution for modular multiplicative inverse!" << std::endl;
+    return -1;
+  }
+
+  x = (x % m + m) % m;
+  return x;
+}
+
 std::string affine_encrypt(const std::string &m, int A, int B) {
   std::string c;
   for (char i : m) {
@@ -70,7 +97,8 @@ std::string affine_decrypt(const std::string &c, int A, int B) {
   std::string m;
   for (char i : c) {
     int j = i - static_cast<int>('a');
-    j = (A * j + B) % 26;
+    int A_inv = mod_mul_inv(A, 26);
+    j = (A_inv * (j - B) + 26) % 26;
     i = static_cast<char>(static_cast<int>('a') + j);
     m += i;
   }
@@ -139,10 +167,26 @@ std::string autokey_gen_master_key(const std::string key, const std::string m) {
   }
 }
 
-std::string autokey_encrypt(const std::string m, int k) {
+std::string autokey_encrypt(const std::string m, std::string k) {
+  std::string master_key = autokey_gen_master_key(std::move(k), m);
+  std::string c;
+  for (int i = 0; i < m.size(); i++) {
+    int j = static_cast<int>(m[i]) - static_cast<int>('a');
+    j = (j + static_cast<int>(k[i])) % 26 + static_cast<int>('a');
+    c += static_cast<char>(j);
+  }
 
+  return c;
 }
 
-std::string autokey_decrypt(const std::string c, int k) {
+std::string autokey_decrypt(const std::string c, std::string k) {
+  std::string master_key = autokey_gen_master_key(std::move(k), c);
+  std::string m;
+  for (int i = 0; i < c.size(); i++) {
+    int j = static_cast<int>(c[i]) - static_cast<int>('a');
+    j = (j + static_cast<int>(k[i])) % 26 + static_cast<int>('a');
+    m += static_cast<char>(j);
+  }
 
+  return m;
 }

@@ -31,8 +31,12 @@ std::string beaufort_encrypt(const std::string m, int k);
 
 std::string beaufort_decrypt(const std::string c, int k);
 
-std::string autokey_encrypt(const std::string m, int k);
+std::string autokey_encrypt(const std::string m, std::string k);
 
-std::string autokey_decrypt(const std::string c, int k);
+std::string autokey_decrypt(const std::string c, std::string k);
+
+std::string hill_encrypt(const std::string m, int k);
+
+std::string hill_decrypt(const std::string c, int k);
 
 #endif //CRYPTO_H

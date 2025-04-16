@@ -166,14 +166,16 @@ std::string autokey_gen_master_key(const std::string key, const std::string m) {
     master_key += m[m_index];
     m_index = (m_index + 1) % static_cast<int>(m.size());
   }
+
+  return master_key;
 }
 
 std::string autokey_encrypt(const std::string m, std::string k) {
-  std::string master_key = autokey_gen_master_key(std::move(k), m);
+  std::string master_key = autokey_gen_master_key(k, m);
   std::string c;
   for (int i = 0; i < m.size(); i++) {
     int j = static_cast<int>(m[i]) - static_cast<int>('a');
-    j = (j + static_cast<int>(k[i])) % 26 + static_cast<int>('a');
+    j = (j + static_cast<int>(master_key[i]) - static_cast<int>('a')) % 26 + static_cast<int>('a');
     c += static_cast<char>(j);
   }
 
@@ -181,12 +183,12 @@ std::string autokey_encrypt(const std::string m, std::string k) {
 }
 
 std::string autokey_decrypt(const std::string c, std::string k) {
-  std::string master_key = autokey_gen_master_key(std::move(k), c);
   std::string m;
   for (int i = 0; i < c.size(); i++) {
     int j = static_cast<int>(c[i]) - static_cast<int>('a');
-    j = (j + static_cast<int>(k[i])) % 26 + static_cast<int>('a');
+    j = (j + 26 - (static_cast<int>(k[i]) - static_cast<int>('a'))) % 26 + static_cast<int>('a');
     m += static_cast<char>(j);
+    k += m[i];
   }
 
   return m;

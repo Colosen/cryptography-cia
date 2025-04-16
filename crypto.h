@@ -6,6 +6,7 @@
 #define CRYPTO_H
 
 #include <string>
+#include <vector>
 
 std::string caesar_encrypt(const std::string& m, int k);
 
@@ -35,8 +36,8 @@ std::string autokey_encrypt(const std::string m, std::string k);
 
 std::string autokey_decrypt(const std::string c, std::string k);
 
-std::string hill_encrypt(const std::string m, int k);
+std::string hill_encrypt(const std::string m, const std::vector<std::vector<int>> k);
 
-std::string hill_decrypt(const std::string c, int k);
+std::string hill_decrypt(const std::string c, const std::vector<std::vector<int>> k);
 
 #endif //CRYPTO_H

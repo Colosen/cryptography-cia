@@ -5,6 +5,7 @@
 #include <iostream>
 #include <string>
 #include <utility>
+#include <vector>
 
 std::string caesar_encrypt(const std::string& m, int k) {
   std::string c;
@@ -189,4 +190,50 @@ std::string autokey_decrypt(const std::string c, std::string k) {
   }
 
   return m;
+}
+
+std::vector<int> string_encode(std::string m) {
+  std::vector<int> encoded_string;
+  for (char c : m) {
+    int i = static_cast<int>(c) - static_cast<int>('a');
+    encoded_string.push_back(i);
+  }
+
+  return encoded_string;
+}
+
+std::vector<int> string_decode(std::vector<int> encoded_string) {
+  std::vector<int> decoded_string;
+  for (int c : encoded_string) {
+    int i = static_cast<int>(c) + static_cast<int>('a');
+    decoded_string.push_back(i);
+  }
+
+  return decoded_string;
+}
+
+std::vector<std::vector<int>> trigrammize_vector(std::vector<int> encoded_string) {
+  std::vector<std::vector<int>> trigrams;
+
+  int counter = 0;
+  for (int c : encoded_string) {
+    trigrams[counter / 3][counter % 3] = c;
+  }
+  return trigrams;
+}
+
+std::string hill_encrypt(const std::string m, const std::vector<std::vector<int>> k) {
+  // convert string to integer vector
+  std::vector<int> encoded_m = string_encode(m);
+
+  // convert to trigrams
+  std::vector<std::vector<int>> trigrams = trigrammize_vector(encoded_m);
+  std::vector<std::vector<int>> encrypted_trigrams;
+  for (std::vector<int> trigram : trigrams) {
+    
+  }
+}
+
+std::string hill_decrypt(const std::string c, const std::vector<std::vector<int>> k) {
+
 }

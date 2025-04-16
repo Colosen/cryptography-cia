@@ -155,7 +155,7 @@ std::string beaufort_decrypt(const std::string c, int k) {
   return m;
 }
 
-std::string autokey_gen_master_key(const std::string key, const std::string m) {
+std::string autokey_gen_master_key(const std::string& key, const std::string& m) {
   if (key.size() >= m.size()) {
     return key;
   }
@@ -170,7 +170,7 @@ std::string autokey_gen_master_key(const std::string key, const std::string m) {
   return master_key;
 }
 
-std::string autokey_encrypt(const std::string m, std::string k) {
+std::string autokey_encrypt(const std::string& m, const std::string& k) {
   std::string master_key = autokey_gen_master_key(k, m);
   std::string c;
   for (int i = 0; i < m.size(); i++) {
@@ -182,7 +182,7 @@ std::string autokey_encrypt(const std::string m, std::string k) {
   return c;
 }
 
-std::string autokey_decrypt(const std::string c, std::string k) {
+std::string autokey_decrypt(const std::string& c, std::string k) {
   std::string m;
   for (int i = 0; i < c.size(); i++) {
     int j = static_cast<int>(c[i]) - static_cast<int>('a');
@@ -194,7 +194,7 @@ std::string autokey_decrypt(const std::string c, std::string k) {
   return m;
 }
 
-std::vector<int> string_encode(std::string m) {
+std::vector<int> string_encode(const std::string& m) {
   std::vector<int> encoded_string;
   for (char c : m) {
     int i = static_cast<int>(c) - static_cast<int>('a');
@@ -214,7 +214,7 @@ std::vector<int> string_decode(std::vector<int> encoded_string) {
   return decoded_string;
 }
 
-std::vector<std::vector<int>> trigrammize_vector(std::vector<int> encoded_string) {
+std::vector<std::vector<int>> trigrammize_vector(const std::vector<int>& encoded_string) {
   std::vector<std::vector<int>> trigrams;
 
   int counter = 0;
@@ -224,7 +224,7 @@ std::vector<std::vector<int>> trigrammize_vector(std::vector<int> encoded_string
   return trigrams;
 }
 
-std::string hill_encrypt(const std::string m, const std::vector<std::vector<int>> k) {
+std::string hill_encrypt(const std::string& m, const std::vector<std::vector<int>>& k) {
   // convert string to integer vector
   std::vector<int> encoded_m = string_encode(m);
 

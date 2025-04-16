@@ -204,17 +204,17 @@ std::vector<int> string_encode(const std::string& m) {
   return encoded_string;
 }
 
-std::vector<int> string_decode(std::vector<int> encoded_string) {
-  std::vector<int> decoded_string;
+std::string string_decode(std::vector<int> encoded_string) {
+  std::string decoded_string;
   for (int c : encoded_string) {
     int i = static_cast<int>(c) + static_cast<int>('a');
-    decoded_string.push_back(i);
+    decoded_string += i;
   }
 
   return decoded_string;
 }
 
-std::vector<std::vector<int>> trigrammize_vector(const std::vector<int>& encoded_string) {
+std::vector<std::vector<int>> trigrammize(const std::vector<int>& encoded_string) {
   std::vector<std::vector<int>> trigrams;
 
   int counter = 0;
@@ -224,18 +224,60 @@ std::vector<std::vector<int>> trigrammize_vector(const std::vector<int>& encoded
   return trigrams;
 }
 
+std::vector<int> untrigrammize(const std::vector<std::vector<int>>& trigrams) {
+  std::vector<int> encoded_string;
+
+  int counter = 0;
+  for (std::vector<int> trigram : trigrams) {
+    for (int a : trigram) {
+      encoded_string.push_back(a);
+    }
+  }
+  return encoded_string;
+}
+
+std::vector<int> mat_mul(std::vector<std::vector<int>> k, std::vector<int> trigram) {
+  std::vector<int> encrypted_trigram(3, 0);
+  for (int i = 0; i < 3; i++) {
+    for (int j = 0; j < 3; j++) {
+      encrypted_trigram[i] += k[i][j] * trigram[j];
+    }
+  }
+  return encrypted_trigram;
+}
+
 std::string hill_encrypt(const std::string& m, const std::vector<std::vector<int>>& k) {
-  // convert string to integer vector
+  // convert plaintext to integer vector
   std::vector<int> encoded_m = string_encode(m);
 
   // convert to trigrams
-  std::vector<std::vector<int>> trigrams = trigrammize_vector(encoded_m);
+  std::vector<std::vector<int>> trigrams = trigrammize(encoded_m);
   std::vector<std::vector<int>> encrypted_trigrams;
   for (std::vector<int> trigram : trigrams) {
-    
+    std::vector<int> encrypted_trigram = mat_mul(k, trigram);
+    encrypted_trigrams.push_back(encrypted_trigram);
   }
+
+  std::vector<int> encoded_s = untrigrammize(encrypted_trigrams);
+  std::string ciphertext = string_decode(encoded_s);
+
+  return ciphertext;
 }
 
 std::string hill_decrypt(const std::string c, const std::vector<std::vector<int>> k) {
+  // convert ciphertext into integer vector
+  std::vector<int> encoded_c = string_encode(c);
 
+  // convert to trigrams
+  std::vector<std::vector<int>> trigrams = trigrammize(encoded_c);
+  std::vector<std::vector<int>> decrypted_trigrams;
+  for (std::vector<int> trigram : trigrams) {
+    std::vector<int> decrypted_trigram = mat_mul(k, trigram);
+    decrypted_trigrams.push_back(decrypted_trigram);
+  }
+
+  std::vector<int> encoded_m = untrigrammize(decrypted_trigrams);
+  std::string plaintext = string_decode(encoded_m);
+
+  return plaintext;
 }

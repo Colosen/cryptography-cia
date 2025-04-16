@@ -36,4 +36,14 @@ int main()
   c = autokey_encrypt("helloworld", k);
   std::cout << c << std::endl;
   std::cout <<  autokey_decrypt(c, k) << std::endl;
+
+  std::vector<std::vector<int>> hill_cipher_key = {
+    {1, 0, 0},
+    {0, 1, 0},
+    {0, 0, 1}
+  };
+
+  c = autokey_encrypt("helloworld", k);
+  std::cout << c << std::endl;
+  std::cout <<  autokey_decrypt(c, k) << std::endl;
 }

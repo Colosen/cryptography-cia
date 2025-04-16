@@ -6,4 +6,6 @@ set(CMAKE_CXX_STANDARD 14)
 add_executable(cryptography_cia
     main.cpp
     crypto.cpp
-    crypto.h)
+    crypto.h
+    matrix.cpp
+    matrix.h)
